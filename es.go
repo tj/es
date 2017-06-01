@@ -123,6 +123,24 @@ func Sum(field string) string {
   `, field)
 }
 
+// Min agg of the given field.
+func Min(field string) string {
+	return fmt.Sprintf(`
+    "min": {
+      "field": %q
+    }
+  `, field)
+}
+
+// Max agg of the given field.
+func Max(field string) string {
+	return fmt.Sprintf(`
+    "max": {
+      "field": %q
+    }
+  `, field)
+}
+
 func join(s []string) string {
 	return strings.Join(s, ",\n")
 }
