@@ -8,35 +8,46 @@ If you don't mind crazy nesting:
 
 ```go
 query := Pretty(Query(
-  Aggs("results",
-    Filter(
-      Term("user.login", "tj"),
-      Range("now-7d", "now"),
-    )(
-      Aggs("repos",
-        Terms("repository.name.keyword", 100),
-        Aggs("labels",
-          Terms("issue.labels.keyword", 100),
-          Aggs("duration_sum", Sum("duration"))))))))
+  Aggs(
+    Agg("results",
+      Filter(
+        Term("user.login", "tj"),
+        Range("now-7d", "now"),
+      )(
+        Aggs(
+          Agg("repos",
+            Terms("repository.name.keyword", 100),
+            Aggs(
+              Agg("labels",
+                Terms("issue.labels.keyword", 100),
+                Aggs(
+                  Agg("duration_sum", Sum("duration"))))))))))))
 ```
 
 If you do mind crazy nesting:
 
 ```go
-labels := Aggs("labels",
-  Terms("issue.labels.keyword", 100),
-  Aggs("duration_sum",
-    Sum("duration")))
+labels := Aggs(
+  Agg("labels",
+    Terms("issue.labels.keyword", 100),
+    Aggs(
+      Agg("duration_sum",
+        Sum("duration")))))
 
-repos := Aggs("repos",
-  Terms("repository.name.keyword", 100),
-  labels)
+repos := Aggs(
+  Agg("repos",
+    Terms("repository.name.keyword", 100),
+    labels))
 
 filter := Filter(
   Term("user.login", "tj"),
   Range("now-7d", "now"))
 
-results := Aggs("results", filter(repos))
+results := Aggs(
+  Agg("results",
+    filter(repos)))
+
+query := Pretty(Query(results))
 ```
 
 Both yielding:

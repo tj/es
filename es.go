@@ -103,13 +103,19 @@ func Term(field, value string) string {
 	}`, field, value)
 }
 
-// Aggs of the given name.
-func Aggs(name string, children ...string) string {
+// Aggs with one or more agg.
+func Aggs(children ...string) string {
 	return fmt.Sprintf(`
   "aggs": {
-    %q: {
-      %s
-    }
+    %s
+  }`, join(children))
+}
+
+// Agg with the given name.
+func Agg(name string, children ...string) string {
+	return fmt.Sprintf(`
+  %q: {
+    %s
   }`, name, join(children))
 }
 
