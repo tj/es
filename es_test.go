@@ -2,6 +2,9 @@ package es_test
 
 import (
 	"fmt"
+	"testing"
+
+	"github.com/tj/assert"
 
 	. "github.com/tj/es"
 )
@@ -141,4 +144,16 @@ func Example_expanded() {
 	//   },
 	//   "size": 0
 	// }
+}
+
+func TestPercentiles(t *testing.T) {
+	t.Run("without percents", func(t *testing.T) {
+		s := Pretty(Query(Percentiles("load_time")))
+		assert.Equal(t, Pretty(`{"size":0,"stats":{"field":"load_time"}}`), s)
+	})
+
+	t.Run("with percents", func(t *testing.T) {
+		s := Pretty(Query(Percentiles("load_time", 95, 99, 99.9)))
+		assert.Equal(t, Pretty(`{"size":0,"stats":{"field":"load_time","percents":[95,99,99.9]}}`), s)
+	})
 }

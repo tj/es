@@ -159,6 +159,36 @@ func Stats(field string) string {
   `, field)
 }
 
+// Percentiles agg of the given field.
+func Percentiles(field string, percents ...float64) string {
+	if len(percents) > 0 {
+		return fmt.Sprintf(`
+      "stats": {
+        "field": %q,
+        "percents": [%s]
+      }
+    `, field, joinFloats(percents))
+	}
+
+	return fmt.Sprintf(`
+    "stats": {
+      "field": %q
+    }
+  `, field)
+}
+
+// JoinFloats returns floats joined by a comma.
+func joinFloats(vals []float64) string {
+	var s []string
+
+	for _, v := range vals {
+		s = append(s, fmt.Sprintf("%0.2f", v))
+	}
+
+	return strings.Join(s, ", ")
+}
+
+// Join returns strings joined by a comma.
 func join(s []string) string {
 	return strings.Join(s, ",\n")
 }
