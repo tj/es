@@ -23,6 +23,7 @@ func compress(s string) string {
 	return string(b)
 }
 
+// When returns `children` only when `cond` is met.
 func When(cond bool, children ...string) string {
 	if cond {
 		return join(children)
