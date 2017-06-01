@@ -23,6 +23,14 @@ func compress(s string) string {
 	return string(b)
 }
 
+func When(cond bool, children ...string) string {
+	if cond {
+		return join(children)
+	}
+
+	return ""
+}
+
 // Pretty JSON.
 func Pretty(s string) string {
 	var v interface{}
@@ -240,5 +248,15 @@ func joinFloats(vals []float64) string {
 
 // Join returns strings joined by a comma.
 func join(s []string) string {
-	return strings.Join(s, ",\n")
+	return strings.Join(clean(s), ",\n")
+}
+
+// Clean empty strings which may be present from When().
+func clean(s []string) (vals []string) {
+	for _, v := range s {
+		if v != "" {
+			vals = append(vals, v)
+		}
+	}
+	return
 }
