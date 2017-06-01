@@ -4,6 +4,8 @@ Package es provides an Elasticsearch query DSL.
 
 ## Example
 
+### Lispy
+
 If you don't mind crazy nesting:
 
 ```go
@@ -23,6 +25,8 @@ query := Pretty(Query(
                 Aggs(
                   Agg("duration_sum", Sum("duration"))))))))))))
 ```
+
+### Less lispy
 
 If you do mind crazy nesting:
 
@@ -104,7 +108,9 @@ Both yielding:
 }
 ```
 
-This also makes re-use more trivial, for example note how `sum` is re-used in the following snippet to fetch global, daily, and label-level summation.
+### Reuse
+
+This also makes reuse more trivial, for example note how `sum` is re-used in the following snippet to fetch global, daily, and label-level summation.
 
 ```go
 sum := Agg("duration_sum", Sum("duration"))
