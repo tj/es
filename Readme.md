@@ -126,6 +126,60 @@ days := Agg("days",
 query := Query(Aggs(sum, labels, days))
 ```
 
+Yielding:
+
+```json
+{
+  "aggs": {
+    "days": {
+      "aggs": {
+        "duration_sum": {
+          "sum": {
+            "field": "duration"
+          }
+        },
+        "labels": {
+          "aggs": {
+            "duration_sum": {
+              "sum": {
+                "field": "duration"
+              }
+            }
+          },
+          "terms": {
+            "field": "issue.labels.keyword",
+            "size": 100
+          }
+        }
+      },
+      "date_histogram": {
+        "field": "timestamp",
+        "interval": "1d"
+      }
+    },
+    "duration_sum": {
+      "sum": {
+        "field": "duration"
+      }
+    },
+    "labels": {
+      "aggs": {
+        "duration_sum": {
+          "sum": {
+            "field": "duration"
+          }
+        }
+      },
+      "terms": {
+        "field": "issue.labels.keyword",
+        "size": 100
+      }
+    }
+  },
+  "size": 0
+}
+```
+
 ---
 
 [![GoDoc](https://godoc.org/github.com/tj/es?status.svg)](https://godoc.org/github.com/tj/es)
