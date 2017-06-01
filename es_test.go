@@ -157,3 +157,13 @@ func TestPercentiles(t *testing.T) {
 		assert.Equal(t, Pretty(`{"size":0,"stats":{"field":"load_time","percents":[95,99,99.9]}}`), s)
 	})
 }
+
+func TestHistogram(t *testing.T) {
+	h := Histogram("load_time",
+		Interval(50),
+		MinDocCount(1),
+		ExtendedBounds(0, 500))
+
+	s := Query(h)
+	assert.Equal(t, `{"histogram":{"extended_bounds":{"max":500,"min":0},"field":"load_time","interval":50,"min_doc_count":1},"size":0}`, s)
+}

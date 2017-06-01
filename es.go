@@ -178,6 +178,34 @@ func Percentiles(field string, percents ...float64) string {
   `, field)
 }
 
+// Histogram agg of the given field.
+func Histogram(field string, options ...string) string {
+	return fmt.Sprintf(`
+    "histogram": {
+      "field": %q,
+      %s
+    }
+  `, field, join(options))
+}
+
+// Interval of `n`.
+func Interval(n int) string {
+	return fmt.Sprintf(`"interval": %d`, n)
+}
+
+// MinDocCount of `n`.
+func MinDocCount(n int) string {
+	return fmt.Sprintf(`"min_doc_count": %d`, n)
+}
+
+// ExtendedBounds of `min` / `max`.
+func ExtendedBounds(min, max int) string {
+	return fmt.Sprintf(`"extended_bounds": {
+    "min": %d,
+    "max": %d
+  }`, min, max)
+}
+
 // JoinFloats returns floats joined by a comma.
 func joinFloats(vals []float64) string {
 	var s []string
