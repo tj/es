@@ -159,7 +159,8 @@ func Stats(field string) string {
   `, field)
 }
 
-// Percentiles agg of the given field.
+// Percentiles agg of the given field, optionally
+// specifying which `percents` to include.
 func Percentiles(field string, percents ...float64) string {
 	if len(percents) > 0 {
 		return fmt.Sprintf(`
