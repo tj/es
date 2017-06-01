@@ -150,6 +150,15 @@ func Max(field string) string {
   `, field)
 }
 
+// Stats agg of the given field.
+func Stats(field string) string {
+	return fmt.Sprintf(`
+    "stats": {
+      "field": %q
+    }
+  `, field)
+}
+
 func join(s []string) string {
 	return strings.Join(s, ",\n")
 }
