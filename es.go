@@ -123,6 +123,15 @@ func Sum(field string) string {
   `, field)
 }
 
+// Avg agg of the given field.
+func Avg(field string) string {
+	return fmt.Sprintf(`
+    "avg": {
+      "field": %q
+    }
+  `, field)
+}
+
 // Min agg of the given field.
 func Min(field string) string {
 	return fmt.Sprintf(`
