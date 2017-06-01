@@ -198,6 +198,11 @@ func MinDocCount(n int) string {
 	return fmt.Sprintf(`"min_doc_count": %d`, n)
 }
 
+// Missing value of `n`.
+func Missing(n int) string {
+	return fmt.Sprintf(`"missing": %d`, n)
+}
+
 // ExtendedBounds of `min` / `max`.
 func ExtendedBounds(min, max int) string {
 	return fmt.Sprintf(`"extended_bounds": {
