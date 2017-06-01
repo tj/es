@@ -104,6 +104,22 @@ Both yielding:
 }
 ```
 
+This also makes re-use more trivial, for example note how `sum` is re-used in the following snippet to fetch global, daily, and label-level summation.
+
+```go
+sum := Agg("duration_sum", Sum("duration"))
+
+labels := Agg("labels",
+  Terms("issue.labels.keyword", 100),
+  Aggs(sum))
+
+days := Agg("days",
+  DateHistogram("1d"),
+  Aggs(sum, labels))
+
+query := Query(Aggs(sum, labels, days))
+```
+
 ---
 
 [![GoDoc](https://godoc.org/github.com/tj/es?status.svg)](https://godoc.org/github.com/tj/es)
