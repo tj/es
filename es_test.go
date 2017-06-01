@@ -162,8 +162,9 @@ func TestHistogram(t *testing.T) {
 	h := Histogram("load_time",
 		Interval(50),
 		MinDocCount(1),
-		ExtendedBounds(0, 500))
+		ExtendedBounds(0, 500),
+		Order("something", Ascending))
 
 	s := Query(h)
-	assert.Equal(t, `{"histogram":{"extended_bounds":{"max":500,"min":0},"field":"load_time","interval":50,"min_doc_count":1},"size":0}`, s)
+	assert.Equal(t, `{"histogram":{"extended_bounds":{"max":500,"min":0},"field":"load_time","interval":50,"min_doc_count":1,"order":{"something":"asc"}},"size":0}`, s)
 }

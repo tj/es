@@ -206,6 +206,22 @@ func ExtendedBounds(min, max int) string {
   }`, min, max)
 }
 
+// Direction for sorting.
+type Direction string
+
+// Directions available.
+const (
+	Ascending  Direction = "asc"
+	Descending           = "desc"
+)
+
+// Order `field` by `direction`.
+func Order(field string, dir Direction) string {
+	return fmt.Sprintf(`"order": {
+    %q: %q
+  }`, field, dir)
+}
+
 // JoinFloats returns floats joined by a comma.
 func joinFloats(vals []float64) string {
 	var s []string
