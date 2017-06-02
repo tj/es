@@ -2,6 +2,7 @@ package es_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/tj/assert"
@@ -297,4 +298,7 @@ func TestHistogram(t *testing.T) {
 func TestTimeZone(t *testing.T) {
 	assert.Equal(t, `"time_zone": "-08:00"`, TimeZone("-08:00"), "offset string")
 	assert.Equal(t, `"time_zone": "+05:45"`, TimeZone("Asia/Kathmandu"), "location")
+
+	os.Setenv("TZ", "Asia/Kathmandu")
+	assert.Equal(t, `"time_zone": "+05:45"`, TimeZone(), "default location")
 }

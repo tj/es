@@ -206,13 +206,19 @@ func Histogram(field string, options ...string) string {
 
 // TimeZone offset such as "-08:00" or America/Los_Angeles".
 // If the location is invalid this function will panic.
-func TimeZone(s string) string {
-	tz, err := time.LoadLocation(s)
-	if err == nil {
-		s = time.Now().In(tz).Format(`-07:00`)
+func TimeZone(s ...string) string {
+	// current location
+	if len(s) == 0 {
+		return fmt.Sprintf(`"time_zone": %q`, offset(time.Now()))
 	}
 
-	return fmt.Sprintf(`"time_zone": %q`, s)
+	// location name
+	if loc, err := time.LoadLocation(s[0]); err == nil {
+		return fmt.Sprintf(`"time_zone": %q`, offset(time.Now().In(loc)))
+	}
+
+	// offset string
+	return fmt.Sprintf(`"time_zone": %q`, s[0])
 }
 
 // Interval int or string.
@@ -285,4 +291,9 @@ func clean(s []string) (vals []string) {
 		}
 	}
 	return
+}
+
+// nOffset returns `t`'s offset.
+func offset(t time.Time) string {
+	return t.Format(`-07:00`)
 }
