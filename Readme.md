@@ -2,6 +2,10 @@
 
 Package es provides an Elasticsearch query DSL.
 
+## About
+
+The use of Go "dot imports" is discouraged, however I'd recommend abstracting this logic into higher level query functions and packages if you'd like to utilize the expressiveness of dot imports in this scenario. I wouldn't recommend dot-importing it into other packages directly.
+
 ## Example
 
 ### Lispy
