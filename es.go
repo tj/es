@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 )
 
 // compress JSON.
@@ -204,7 +205,13 @@ func Histogram(field string, options ...string) string {
 }
 
 // TimeZone offset such as "-08:00" or America/Los_Angeles".
+// If the location is invalid this function will panic.
 func TimeZone(s string) string {
+	tz, err := time.LoadLocation(s)
+	if err == nil {
+		s = time.Now().In(tz).Format(`-07:00`)
+	}
+
 	return fmt.Sprintf(`"time_zone": %q`, s)
 }
 

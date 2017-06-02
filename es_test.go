@@ -293,3 +293,8 @@ func TestHistogram(t *testing.T) {
 	s := Query(h)
 	assert.Equal(t, `{"histogram":{"extended_bounds":{"max":500,"min":0},"field":"load_time","interval":50,"min_doc_count":1,"order":{"something":"asc"}},"size":0}`, s)
 }
+
+func TestTimeZone(t *testing.T) {
+	assert.Equal(t, `"time_zone": "-08:00"`, TimeZone("-08:00"), "offset string")
+	assert.Equal(t, `"time_zone": "+05:45"`, TimeZone("Asia/Kathmandu"), "location")
+}
