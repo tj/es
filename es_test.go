@@ -274,6 +274,15 @@ func TestPercentiles(t *testing.T) {
 	})
 }
 
+func TestDateHistogram(t *testing.T) {
+	h := DateHistogram("timestamp",
+		Interval("30m"),
+		TimeZone("-08:00"))
+
+	s := Query(h)
+	assert.Equal(t, `{"date_histogram":{"field":"timestamp","interval":"30m","time_zone":"-08:00"},"size":0}`, s)
+}
+
 func TestHistogram(t *testing.T) {
 	h := Histogram("load_time",
 		Interval(50),

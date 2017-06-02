@@ -56,16 +56,6 @@ func Query(children ...string) string {
   }`, join(children)))
 }
 
-// DateHistogram applies a date_histogram.
-func DateHistogram(interval string) string {
-	return fmt.Sprintf(`
-		"date_histogram": {
-			"field": "timestamp",
-			"interval": %q
-		}
-	`, interval)
-}
-
 // Filter applies the given filters.
 func Filter(filters ...string) func(children ...string) string {
 	return func(children ...string) string {
@@ -193,6 +183,16 @@ func Percentiles(field string, percents ...float64) string {
   `, field)
 }
 
+// DateHistogram agg of the given field.
+func DateHistogram(field string, options ...string) string {
+	return fmt.Sprintf(`
+		"date_histogram": {
+			"field": %q,
+			%s
+		}
+	`, field, join(options))
+}
+
 // Histogram agg of the given field.
 func Histogram(field string, options ...string) string {
 	return fmt.Sprintf(`
@@ -203,9 +203,21 @@ func Histogram(field string, options ...string) string {
   `, field, join(options))
 }
 
-// Interval of `n`.
-func Interval(n int) string {
-	return fmt.Sprintf(`"interval": %d`, n)
+// TimeZone offset such as "-08:00" or America/Los_Angeles".
+func TimeZone(s string) string {
+	return fmt.Sprintf(`"time_zone": %q`, s)
+}
+
+// Interval int or string.
+func Interval(v interface{}) string {
+	switch v.(type) {
+	case string:
+		return fmt.Sprintf(`"interval": %q`, v)
+	case int:
+		return fmt.Sprintf(`"interval": %d`, v)
+	default:
+		panic("invalid interval, must be an int or string")
+	}
 }
 
 // MinDocCount of `n`.
